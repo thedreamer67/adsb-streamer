@@ -1,7 +1,7 @@
 """
 fetch_adsb.py
 -------------
-Downloads ADS-B Exchange hires-traces for a given date/hour window and
+Downloads ADS-B Exchange hires-traces for a given date/hour window (in UTC) and
 writes hourly CSV files whose columns match the adsb_exchange Postgres table.
 
 The script streams each per-aircraft trace file directly from the public
@@ -33,33 +33,19 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
-try:
-    import boto3
-    from botocore.config import Config
-except ImportError:
-    print("Missing dependency. Run:  pip install boto3")
-    sys.exit(1)
-
-try:
-    from tqdm import tqdm
-except ImportError:
-    print("Missing dependency. Run:  pip install tqdm")
-    sys.exit(1)
-
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass  # .env is optional here; credentials fall back to public defaults
+import boto3
+from tqdm import tqdm
+from dotenv import load_dotenv
 
 
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-
 R2_ENDPOINT    = "https://6ff2cd7dae70306649e2c1e1500e2e0a.r2.cloudflarestorage.com"
 PUBLIC_KEY_ID  = "7b8d31d9d2f2d73ffb2208614db599fa"
 PUBLIC_SECRET  = "8bd955340e355418a5204e52a055005b6ca761f896abe0cccdd741638e790a76"
+
+load_dotenv()
 
 # Public sample bucket — replace with e.g. "adsbx-recent-hires-traces" if you have paid access
 BUCKET = os.environ.get("ADSBX_BUCKET", "adsbx-sample-data")
