@@ -164,9 +164,12 @@ def parse_trace(data: bytes, start_ts: float, end_ts: float) -> list[dict]:
     except json.JSONDecodeError:
         return []
 
-    icao        = obj.get("icao", "")
-    base_ts     = float(obj.get("timestamp", 0))
-    trace       = obj.get("trace", [])
+    icao = obj.get("icao", "").strip()
+    if not icao:
+        return []
+
+    base_ts = float(obj.get("timestamp", 0))
+    trace = obj.get("trace", [])
 
     # Static fields that apply to all points in this file
     # (r, t, type are per-file metadata in hires-traces)
@@ -191,6 +194,9 @@ def parse_trace(data: bytes, start_ts: float, end_ts: float) -> list[dict]:
         ext = entry[8] if len(entry) > 8 and isinstance(entry[8], dict) else {}
 
         dt = datetime.fromtimestamp(ts, tz=timezone.utc)
+
+        if not icao:
+            continue
 
         rows.append({
             "timestamp":    dt.isoformat(),
