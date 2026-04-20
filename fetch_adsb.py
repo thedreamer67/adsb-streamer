@@ -1,5 +1,5 @@
 """
-adsb_fetch.py
+fetch_adsb.py
 -------------
 Downloads ADS-B Exchange hires-traces for a given date/hour window and
 writes hourly CSV files whose columns match the adsb_exchange Postgres table.
@@ -8,9 +8,9 @@ The script streams each per-aircraft trace file directly from the public
 Cloudflare R2 bucket — no rclone or AWS CLI needed.
 
 Usage:
-    python adsb_fetch.py
-    python adsb_fetch.py --date 2026-04-01 --start-hour 12 --end-hour 16
-    python adsb_fetch.py --workers 20 --output-dir data
+    python fetch_adsb.py
+    python fetch_adsb.py --date 2026-04-01 --start-hour 12 --end-hour 16
+    python fetch_adsb.py --workers 20 --output-dir data
 
 Dependencies:
     pip install boto3 tqdm

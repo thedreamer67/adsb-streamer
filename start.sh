@@ -1,2 +1,2 @@
 source venv/bin/activate
-python stream_adsb.py
+python fetch_adsb.py
