@@ -13,7 +13,7 @@ Usage:
     python fetch_adsb.py --workers 20 --output-dir data
 
 Dependencies:
-    pip install boto3 tqdm
+    pip install -r requirements-min.txt
 
 Credentials:
     Uses the public ADS-B Exchange sample credentials by default.
